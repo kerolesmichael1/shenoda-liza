@@ -115,7 +115,7 @@ td .acts{display:flex;gap:6px}
   <form id="loginForm">
     <div class="mark">S &amp; L</div>
     <h1>لوحة تحكم الدعوة</h1>
-    <div class="field"><label for="email">الإيميل</label><input id="email" type="email" class="ltr" autocomplete="username" required></div>
+    <div class="field"><label for="email">اسم المستخدم</label><input id="email" type="text" class="ltr" autocomplete="username" autocapitalize="off" spellcheck="false" required></div>
     <div class="field"><label for="pass">الباسورد</label><input id="pass" type="password" class="ltr" autocomplete="current-password" required></div>
     <button class="btn" type="submit" id="loginBtn">دخول</button>
     <p class="status" id="loginMsg" role="status"></p>
@@ -264,12 +264,18 @@ td .acts{display:flex;gap:6px}
   function say(el, text, kind){ el.textContent = text; el.className = (el.className.split(" ")[0]) + (kind ? " " + kind : ""); }
 
   // ---------- auth ----------
+  function loginEmail(u){
+    u = String(u||"").trim();
+    if (u.indexOf("@") > 0) return u;
+    var map = (window.WEDDING_CONFIG && window.WEDDING_CONFIG.USERS) || {};
+    return map[u.toLowerCase()] || (u.toLowerCase() + "@invalid.local");
+  }
   if (!sb){ say($("loginMsg"), "مش قادر أوصل للسيرفر. اتأكد من الإنترنت.", "err"); return; }
   $("loginForm").addEventListener("submit", function(e){
     e.preventDefault(); $("loginBtn").disabled = true; say($("loginMsg"), "");
-    sb.auth.signInWithPassword({email: $("email").value.trim(), password: $("pass").value}).then(function(r){
+    sb.auth.signInWithPassword({email: loginEmail($("email").value), password: $("pass").value}).then(function(r){
       $("loginBtn").disabled = false;
-      if (r.error){ say($("loginMsg"), "الإيميل أو الباسورد غلط.", "err"); return; }
+      if (r.error){ say($("loginMsg"), "اسم المستخدم أو الباسورد غلط.", "err"); return; }
       start();
     });
   });
