@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>لوحة التحكم | الدعوة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Pinyon+Script&display=swap">
+<style>
+:root{
+  --bg:#EEF2F7; --panel:#FFFFFF; --ink:#1E2D47; --soft:#5B6880; --line:#D9E1EC; --blue:#5A79A3; --blue-d:#3F5C85;
+  --mist:#E4EBF4; --gold:#B3955A; --ok:#2F7A55; --ok-bg:#E3F2EA; --no:#A44949; --no-bg:#F6E4E4;
+  --f:"IBM Plex Sans Arabic",system-ui,"Segoe UI",Tahoma,sans-serif; color-scheme:light;
+}
+*{box-sizing:border-box} html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.6;min-height:100svh}
+[hidden]{display:none!important}
+h1,h2,h3,p{margin:0} h1,h2,h3{text-wrap:balance}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.wrap{max-width:1040px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right));padding-block:20px 60px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 18px;border-radius:8px;border:1px solid var(--blue);background:var(--blue);color:#fff;font-weight:600;cursor:pointer;text-decoration:none;font-size:14px}
+.btn:hover{background:var(--blue-d)}
+.btn.ghost{background:#fff;color:var(--ink);border-color:var(--line)} .btn.ghost:hover{background:var(--mist)}
+.btn.danger{background:#fff;color:var(--no);border-color:#E7C9C9} .btn.danger:hover{background:var(--no-bg)}
+.btn.sm{padding:5px 10px;font-size:13px}
+.btn:disabled{opacity:.55;cursor:default}
+
+/* login */
+.login{min-height:100svh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.login form{width:min(380px,100%);background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:28px;display:grid;gap:14px}
+.login .mark{font-family:"Pinyon Script",cursive;font-size:40px;color:var(--blue);text-align:center;direction:ltr;line-height:1.2}
+.login h1{font-size:20px;text-align:center}
+
+/* top bar */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.top .who{display:flex;align-items:center;gap:12px}
+.top .mark{font-family:"Pinyon Script",cursive;font-size:30px;color:var(--blue);direction:ltr;line-height:1}
+.top h1{font-size:18px}
+.top .sub{font-size:13px;color:var(--soft)}
+.top .acts{display:flex;gap:8px;flex-wrap:wrap}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stat .k{font-size:13px;color:var(--soft)}
+.stat .v{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.3}
+.stat.ok .v{color:var(--ok)} .stat.no .v{color:var(--no)}
+@media (max-width:640px){ .stats{grid-template-columns:repeat(2,minmax(0,1fr))} }
+
+/* tabs */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:18px;overflow-x:auto}
+.tab{background:none;border:0;border-bottom:2px solid transparent;padding:10px 14px;cursor:pointer;color:var(--soft);font-weight:600;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--ink);border-color:var(--blue)}
+.badge{display:inline-block;min-width:20px;padding:0 6px;border-radius:999px;background:var(--mist);color:var(--blue-d);font-size:12px;margin-inline-start:4px}
+
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}
+.panel + .panel{margin-top:14px}
+.panel h2{font-size:16px;margin-bottom:4px}
+.panel .hint{font-size:13px;color:var(--soft);margin-bottom:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:640px){ .grid2{grid-template-columns:1fr} }
+.field{display:grid;gap:5px;min-width:0}
+.field label{font-size:13px;font-weight:600;color:var(--soft)}
+.field input,.field textarea,.field select{width:100%;background:#fff;border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:15px}
+.field textarea{min-height:70px;resize:vertical}
+.field .help{font-size:12px;color:var(--soft)}
+.ltr{direction:ltr;text-align:left}
+.savebar{position:sticky;bottom:0;display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap;background:rgba(238,242,247,.95);backdrop-filter:blur(6px);
+  padding:12px max(16px,env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));margin:18px -16px 0;border-top:1px solid var(--line)}
+.status{font-size:14px} .status.ok{color:var(--ok)} .status.err{color:var(--no)}
+
+/* photos */
+.drop{border:2px dashed var(--line);border-radius:10px;padding:22px;text-align:center;color:var(--soft);cursor:pointer;transition:background .15s,border-color .15s}
+.drop:hover,.drop.over{border-color:var(--blue);background:var(--mist)}
+.drop b{color:var(--blue-d)}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:16px}
+.thumb{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
+.thumb img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:var(--mist)}
+.thumb .row{display:flex;justify-content:space-between;align-items:center;gap:4px;padding:6px}
+.thumb .n{font-size:12px;color:var(--soft);font-variant-numeric:tabular-nums}
+.thumb .row div{display:flex;gap:4px}
+.progress{font-size:14px;color:var(--blue-d);margin-top:10px}
+
+/* music */
+.track{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#FAFBFD}
+.track audio{flex:1;min-width:220px;max-width:100%}
+
+/* wishes */
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.chipf{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;cursor:pointer;font-size:13px;font-weight:600;color:var(--soft)}
+.chipf[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.filters input{flex:1;min-width:160px;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:#fff}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
+table{width:100%;border-collapse:collapse;min-width:640px}
+th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--mist);vertical-align:top}
+th{font-size:12px;color:var(--soft);font-weight:600;background:#FAFBFD;position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+td.msg{white-space:pre-wrap;overflow-wrap:anywhere;max-width:420px}
+td.when{font-size:13px;color:var(--soft);white-space:nowrap}
+tr.hid td{opacity:.5}
+.pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
+.pill.yes{background:var(--ok-bg);color:var(--ok)} .pill.no{background:var(--no-bg);color:var(--no)} .pill.na{background:var(--mist);color:var(--soft)}
+td .acts{display:flex;gap:6px}
+.none{padding:30px;text-align:center;color:var(--soft)}
+.confirm{display:inline-flex;gap:6px;align-items:center;font-size:13px}
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div class="login" id="loginView">
+  <form id="loginForm">
+    <div class="mark">S &amp; L</div>
+    <h1>لوحة تحكم الدعوة</h1>
+    <div class="field"><label for="email">الإيميل</label><input id="email" type="email" class="ltr" autocomplete="username" required></div>
+    <div class="field"><label for="pass">الباسورد</label><input id="pass" type="password" class="ltr" autocomplete="current-password" required></div>
+    <button class="btn" type="submit" id="loginBtn">دخول</button>
+    <p class="status" id="loginMsg" role="status"></p>
+  </form>
+</div>
+
+<!-- Dashboard -->
+<div class="wrap" id="appView" hidden>
+  <header class="top">
+    <div class="who"><span class="mark" id="topMark">S &amp; L</span><div><h1>لوحة تحكم الدعوة</h1><p class="sub" id="topSub"></p></div></div>
+    <div class="acts">
+      <a class="btn ghost" href="./" target="_blank" rel="noopener">افتح الدعوة</a>
+      <button class="btn ghost" id="copyLink" type="button">انسخ لينك الدعوة</button>
+      <button class="btn ghost" id="logout" type="button">خروج</button>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="k">فاضل على الفرح</div><div class="v" id="sDays">–</div></div>
+    <div class="stat"><div class="k">إجمالي الردود</div><div class="v" id="sTotal">–</div></div>
+    <div class="stat ok"><div class="k">هيحضروا</div><div class="v" id="sYes">–</div></div>
+    <div class="stat no"><div class="k">مش هيقدروا</div><div class="v" id="sNo">–</div></div>
+  </div>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" data-tab="wishes" aria-selected="true">التهاني والردود <span class="badge" id="bWishes">0</span></button>
+    <button class="tab" role="tab" data-tab="details" aria-selected="false">الميعاد والأماكن</button>
+    <button class="tab" role="tab" data-tab="photos" aria-selected="false">الصور <span class="badge" id="bPhotos">0</span></button>
+    <button class="tab" role="tab" data-tab="music" aria-selected="false">الموسيقى</button>
+    <button class="tab" role="tab" data-tab="account" aria-selected="false">الحساب</button>
+  </nav>
+
+  <!-- Wishes -->
+  <div data-pane="wishes">
+    <div class="filters">
+      <button class="chipf" data-f="all" aria-pressed="true">الكل</button>
+      <button class="chipf" data-f="yes" aria-pressed="false">هيحضروا</button>
+      <button class="chipf" data-f="no" aria-pressed="false">مش هيقدروا</button>
+      <button class="chipf" data-f="hidden" aria-pressed="false">المخفية</button>
+      <input id="q" type="search" placeholder="دوّر باسم أو كلمة">
+      <button class="btn ghost sm" id="refresh" type="button">تحديث</button>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>الاسم</th><th>الحضور</th><th>التهنئة</th><th>الوقت</th><th></th></tr></thead>
+        <tbody id="wBody"></tbody>
+      </table>
+      <div class="none" id="wNone" hidden>لسه مافيش ردود. أول ما حد يبعت تهنئة هتظهر هنا.</div>
+    </div>
+  </div>
+
+  <!-- Details -->
+  <form data-pane="details" id="detailsForm" hidden>
+    <div class="panel">
+      <h2>العرسان</h2><p class="hint">الأسماء بالإنجليزي بتظهر بالخط المزخرف، والعربي تحتها.</p>
+      <div class="grid2">
+        <div class="field"><label for="groom">اسم العريس (إنجليزي)</label><input id="groom" class="ltr" required></div>
+        <div class="field"><label for="bride">اسم العروسة (إنجليزي)</label><input id="bride" class="ltr" required></div>
+        <div class="field"><label for="groom_ar">اسم العريس (عربي)</label><input id="groom_ar" required></div>
+        <div class="field"><label for="bride_ar">اسم العروسة (عربي)</label><input id="bride_ar" required></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>التاريخ والساعة</h2><p class="hint">العد التنازلي والتقويم وزرار "أضف إلى التقويم" بيتحسبوا من هنا، بتوقيت القاهرة.</p>
+      <div class="grid2">
+        <div class="field"><label for="event_at">ميعاد الفرح</label><input id="event_at" type="datetime-local" required></div>
+        <div class="field"><label>هيظهر للضيوف كدا</label><div id="evPreview" style="padding:9px 0;font-weight:600"></div></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>الكنيسة (صلاة الإكليل)</h2><p class="hint">سيب الاسم فاضي لو مش عايز الكارت يظهر.</p>
+      <div class="grid2">
+        <div class="field"><label for="church_name">اسم الكنيسة</label><input id="church_name"></div>
+        <div class="field"><label for="church_time">ميعاد الإكليل (اختياري)</label><input id="church_time" placeholder="مثلاً: 4:00 مساءً"></div>
+        <div class="field"><label for="church_address">العنوان (اختياري)</label><input id="church_address"></div>
+        <div class="field"><label for="church_map_url">لينك اللوكيشن من Google Maps</label><input id="church_map_url" class="ltr" placeholder="https://maps.app.goo.gl/..."><span class="help">افتح المكان في Google Maps، دوس مشاركة، وانسخ اللينك هنا.</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>القاعة (الاستقبال)</h2>
+      <div class="grid2">
+        <div class="field"><label for="hall_name">اسم القاعة</label><input id="hall_name"></div>
+        <div class="field"><label for="hall_time">ميعاد القاعة (اختياري)</label><input id="hall_time" placeholder="مثلاً: 7:00 مساءً"></div>
+        <div class="field"><label for="hall_address">العنوان</label><input id="hall_address"></div>
+        <div class="field"><label for="hall_map_url">لينك اللوكيشن من Google Maps</label><input id="hall_map_url" class="ltr"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>حاجات تانية</h2>
+      <div class="grid2">
+        <div class="field"><label for="whatsapp">رقم واتساب (اختياري)</label><input id="whatsapp" class="ltr" placeholder="201001234567"><span class="help">بكود الدولة من غير + ولا مسافات. لو موجود هيظهر لينك واتساب في الدعوة.</span></div>
+        <div class="field"><label for="closing_text">جملة الختام</label><textarea id="closing_text"></textarea></div>
+      </div>
+    </div>
+    <div class="savebar"><span class="status" id="dMsg" role="status"></span><button class="btn" type="submit" id="dSave">احفظ التعديلات</button></div>
+  </form>
+
+  <!-- Photos -->
+  <div data-pane="photos" hidden>
+    <div class="panel">
+      <h2>صور المعرض</h2><p class="hint">الصور بتتصغّر تلقائيًا قبل الرفع عشان الدعوة تفتح بسرعة. الترتيب هنا هو ترتيبها في الدعوة.</p>
+      <label class="drop" id="drop" for="photoInput"><b>اختار صور</b> أو اسحبها هنا<br><small>JPG أو PNG أو WEBP</small></label>
+      <input id="photoInput" type="file" accept="image/*" multiple hidden>
+      <p class="progress" id="pMsg" role="status"></p>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+  </div>
+
+  <!-- Music -->
+  <div data-pane="music" hidden>
+    <div class="panel">
+      <h2>موسيقى الدعوة</h2><p class="hint">بتشتغل أول ما الضيف يدوس "افتح الدعوة"، ويقدر يوقفها من الزرار اللي في الركن. يفضّل MP3 أقل من 8 ميجا.</p>
+      <label class="drop" for="musicInput"><b>اختار ملف صوت</b><br><small>MP3 أو M4A</small></label>
+      <input id="musicInput" type="file" accept="audio/*" hidden>
+      <p class="progress" id="mMsg" role="status"></p>
+      <div class="track" id="track" hidden>
+        <audio id="mPlayer" controls preload="none"></audio>
+        <button class="btn danger sm" id="mRemove" type="button">شيل الموسيقى</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account -->
+  <form data-pane="account" id="passForm" hidden>
+    <div class="panel">
+      <h2>تغيير الباسورد</h2><p class="hint">غيّر الباسورد اللي اتبعتلك بواحد إنت تختاره.</p>
+      <div class="grid2">
+        <div class="field"><label for="np1">الباسورد الجديد</label><input id="np1" type="password" class="ltr" minlength="8" autocomplete="new-password" required></div>
+        <div class="field"><label for="np2">أكّد الباسورد</label><input id="np2" type="password" class="ltr" minlength="8" autocomplete="new-password" required></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;margin-top:14px;flex-wrap:wrap"><button class="btn" type="submit">غيّر الباسورد</button><span class="status" id="aMsg" role="status"></span></div>
+    </div>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script src="common.js"></script>
+<script>
+(function(){
+  var U = window.WeddingUtil, sb = U.client();
+  var $ = function(id){ return document.getElementById(id); };
+  var inv = null, wishes = [], filter = "all";
+  var FIELDS = ["groom","bride","groom_ar","bride_ar","church_name","church_time","church_address","church_map_url","hall_name","hall_time","hall_address","hall_map_url","whatsapp","closing_text"];
+
+  function say(el, text, kind){ el.textContent = text; el.className = (el.className.split(" ")[0]) + (kind ? " " + kind : ""); }
+
+  // ---------- auth ----------
+  if (!sb){ say($("loginMsg"), "مش قادر أوصل للسيرفر. اتأكد من الإنترنت.", "err"); return; }
+  $("loginForm").addEventListener("submit", function(e){
+    e.preventDefault(); $("loginBtn").disabled = true; say($("loginMsg"), "");
+    sb.auth.signInWithPassword({email: $("email").value.trim(), password: $("pass").value}).then(function(r){
+      $("loginBtn").disabled = false;
+      if (r.error){ say($("loginMsg"), "الإيميل أو الباسورد غلط.", "err"); return; }
+      start();
+    });
+  });
+  $("logout").addEventListener("click", function(){ sb.auth.signOut().then(function(){ location.reload(); }); });
+  sb.auth.getSession().then(function(r){ if (r.data && r.data.session) start(); });
+
+  var started = false;
+  function start(){
+    if (started) return; started = true;
+    sb.from("admins").select("user_id").limit(1).then(function(r){
+      if (r.error || !r.data || !r.data.length){ say($("loginMsg"), "الحساب ده مالوش صلاحية على الدعوة.", "err"); sb.auth.signOut(); started = false; return; }
+      $("loginView").hidden = true; $("appView").hidden = false;
+      loadInvitation(); loadWishes();
+    });
+  }
+
+  // ---------- tabs ----------
+  document.querySelectorAll(".tab").forEach(function(t){
+    t.addEventListener("click", function(){
+      document.querySelectorAll(".tab").forEach(function(x){ x.setAttribute("aria-selected", x === t ? "true" : "false"); });
+      document.querySelectorAll("[data-pane]").forEach(function(p){ p.hidden = p.dataset.pane !== t.dataset.tab; });
+    });
+  });
+
+  // ---------- invitation ----------
+  function loadInvitation(){
+    sb.from("invitation").select("*").eq("id",1).single().then(function(r){
+      if (r.error){ say($("dMsg"), "مقدرتش أجيب البيانات.", "err"); return; }
+      inv = r.data; fillForm(); renderPhotos(); renderMusic(); renderTop();
+    });
+  }
+  function renderTop(){
+    $("topMark").textContent = (inv.groom||"S")[0] + " & " + (inv.bride||"L")[0];
+    var ev = new Date(inv.event_at);
+    $("topSub").textContent = "فرح " + inv.groom_ar + " و" + inv.bride_ar + " · " + U.weekday(ev) + " " + U.shortDate(ev) + " · " + U.time(ev);
+    var days = Math.ceil((ev.getTime() - Date.now()) / 86400000);
+    $("sDays").textContent = days > 0 ? days + " يوم" : (days === 0 ? "النهارده" : "خلص");
+  }
+  function fillForm(){
+    FIELDS.forEach(function(k){ $(k).value = inv[k] || ""; });
+    $("event_at").value = U.toLocalInput(new Date(inv.event_at)); preview();
+  }
+  function preview(){
+    var d = U.fromLocalInput($("event_at").value);
+    $("evPreview").textContent = d ? U.weekday(d) + "، " + U.shortDate(d) + " · " + U.time(d) : "—";
+  }
+  $("event_at").addEventListener("input", preview);
+  $("detailsForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var d = U.fromLocalInput($("event_at").value);
+    if (!d){ say($("dMsg"), "اختار تاريخ وساعة الفرح.", "err"); return; }
+    var patch = {event_at: d.toISOString(), updated_at: new Date().toISOString()};
+    FIELDS.forEach(function(k){ patch[k] = $(k).value.trim(); });
+    patch.whatsapp = patch.whatsapp.replace(/\D/g,"");
+    ["church_map_url","hall_map_url"].forEach(function(k){ if (patch[k] && !U.safeUrl(patch[k])){ patch[k] = ""; } });
+    if (!patch.groom || !patch.bride || !patch.groom_ar || !patch.bride_ar){ say($("dMsg"), "أسماء العرسان مطلوبة.", "err"); return; }
+    $("dSave").disabled = true; say($("dMsg"), "جاري الحفظ...");
+    update(patch).then(function(ok){ $("dSave").disabled = false; if (ok){ say($("dMsg"), "اتحفظ. الدعوة اتحدثت.", "ok"); fillForm(); } else say($("dMsg"), "الحفظ ماتمش، جرّب تاني.", "err"); });
+  });
+  function update(patch){
+    return sb.from("invitation").update(patch).eq("id",1).select().single().then(function(r){
+      if (r.error || !r.data) return false; inv = r.data; renderTop(); return true;
+    });
+  }
+
+  // ---------- photos ----------
+  function list(){ return (Array.isArray(inv.photos) ? inv.photos : []).map(function(p){ return typeof p === "string" ? {url:p} : p; }); }
+  function renderPhotos(){
+    var ps = list(), box = $("thumbs"); box.innerHTML = ""; $("bPhotos").textContent = ps.length;
+    ps.forEach(function(p, i){
+      var c = document.createElement("div"); c.className = "thumb";
+      c.innerHTML = '<img alt="" loading="lazy"><div class="row"><span class="n">'+(i+1)+'</span><div>'
+        + '<button class="btn ghost sm" data-a="up" title="قدّمها"'+(i===0?" disabled":"")+'>→</button>'
+        + '<button class="btn ghost sm" data-a="down" title="أخّرها"'+(i===ps.length-1?" disabled":"")+'>←</button>'
+        + '<button class="btn danger sm" data-a="del">مسح</button></div></div>';
+      c.querySelector("img").src = p.url;
+      c.querySelectorAll("button").forEach(function(b){ b.addEventListener("click", function(){ photoAction(b.dataset.a, i, b); }); });
+      box.appendChild(c);
+    });
+  }
+  function photoAction(a, i, btn){
+    var ps = list();
+    if (a === "del"){
+      if (btn.dataset.sure !== "1"){ btn.dataset.sure = "1"; btn.textContent = "متأكد؟"; setTimeout(function(){ btn.dataset.sure=""; btn.textContent="مسح"; }, 3000); return; }
+      var gone = ps.splice(i,1)[0];
+      update({photos: ps}).then(function(ok){
+        if (!ok){ say($("pMsg"), "المسح ماتمش.", "err"); return; }
+        if (gone && gone.path) sb.storage.from("media").remove([gone.path]);
+        renderPhotos(); say($("pMsg"), "الصورة اتمسحت.", "ok");
+      });
+      return;
+    }
+    var j = a === "up" ? i-1 : i+1; if (j < 0 || j >= ps.length) return;
+    var t = ps[i]; ps[i] = ps[j]; ps[j] = t;
+    update({photos: ps}).then(function(ok){ if (ok) renderPhotos(); });
+  }
+  function shrink(file){
+    return new Promise(function(res){
+      if (!/^image\/(jpeg|png|webp)$/.test(file.type)){ res(file); return; }
+      var img = new Image(), url = URL.createObjectURL(file);
+      img.onload = function(){
+        var max = 1800, s = Math.min(1, max / Math.max(img.width, img.height));
+        var c = document.createElement("canvas"); c.width = Math.round(img.width*s); c.height = Math.round(img.height*s);
+        c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+        c.toBlob(function(b){ res(b && b.size < file.size ? new File([b], "p.jpg", {type:"image/jpeg"}) : file); }, "image/jpeg", 0.86);
+      };
+      img.onerror = function(){ URL.revokeObjectURL(url); res(file); };
+      img.src = url;
+    });
+  }
+  function key(prefix, file){ var ext = (file.type.split("/")[1] || "bin").replace("jpeg","jpg").replace("mpeg","mp3").replace("x-m4a","m4a"); return prefix + "/" + Date.now() + "-" + Math.random().toString(36).slice(2,8) + "." + ext; }
+  async function uploadPhotos(files){
+    files = Array.prototype.filter.call(files, function(f){ return /^image\//.test(f.type); });
+    if (!files.length) return;
+    var added = [];
+    for (var i=0;i<files.length;i++){
+      say($("pMsg"), "بيرفع صورة " + (i+1) + " من " + files.length + "...");
+      var f = await shrink(files[i]), path = key("photos", f);
+      var r = await sb.storage.from("media").upload(path, f, {cacheControl:"31536000", contentType:f.type});
+      if (r.error){ say($("pMsg"), "صورة " + (i+1) + " مارفعتش: " + r.error.message, "err"); continue; }
+      added.push({url: sb.storage.from("media").getPublicUrl(path).data.publicUrl, path: path});
+    }
+    if (!added.length) return;
+    var ok = await update({photos: list().concat(added)});
+    renderPhotos(); say($("pMsg"), ok ? "اترفع " + added.length + " صورة." : "الصور اترفعت بس ماتحفظتش في الدعوة.", ok ? "ok" : "err");
+  }
+  $("photoInput").addEventListener("change", function(){ uploadPhotos(this.files); this.value = ""; });
+  var drop = $("drop");
+  ["dragenter","dragover"].forEach(function(t){ drop.addEventListener(t, function(e){ e.preventDefault(); drop.classList.add("over"); }); });
+  ["dragleave","drop"].forEach(function(t){ drop.addEventListener(t, function(e){ e.preventDefault(); drop.classList.remove("over"); }); });
+  drop.addEventListener("drop", function(e){ uploadPhotos(e.dataTransfer.files); });
+
+  // ---------- music ----------
+  function renderMusic(){ $("track").hidden = !inv.music_url; if (inv.music_url) $("mPlayer").src = inv.music_url; }
+  $("musicInput").addEventListener("change", async function(){
+    var f = this.files[0]; this.value = ""; if (!f) return;
+    if (f.size > 15*1024*1024){ say($("mMsg"), "الملف أكبر من 15 ميجا. صغّره وجرّب تاني.", "err"); return; }
+    say($("mMsg"), "بيرفع الموسيقى...");
+    var path = key("music", f), old = inv.music_path;
+    var r = await sb.storage.from("media").upload(path, f, {cacheControl:"31536000", contentType: f.type || "audio/mpeg"});
+    if (r.error){ say($("mMsg"), "الرفع ماتمش: " + r.error.message, "err"); return; }
+    var ok = await update({music_url: sb.storage.from("media").getPublicUrl(path).data.publicUrl});
+    if (ok){ inv.music_path = path; renderMusic(); say($("mMsg"), "الموسيقى اترفعت وهتشتغل مع فتح الدعوة.", "ok"); }
+    else say($("mMsg"), "اترفعت بس ماتحفظتش.", "err");
+  });
+  $("mRemove").addEventListener("click", function(){
+    var b = this;
+    if (b.dataset.sure !== "1"){ b.dataset.sure = "1"; b.textContent = "متأكد؟"; setTimeout(function(){ b.dataset.sure=""; b.textContent="شيل الموسيقى"; }, 3000); return; }
+    var url = inv.music_url || "", m = url.split("/media/")[1];
+    update({music_url: ""}).then(function(ok){
+      if (ok){ if (m) sb.storage.from("media").remove([decodeURIComponent(m)]); $("mPlayer").removeAttribute("src"); renderMusic(); say($("mMsg"), "الموسيقى اتشالت.", "ok"); }
+    });
+  });
+
+  // ---------- wishes ----------
+  function loadWishes(){
+    sb.from("wishes").select("*").order("created_at",{ascending:false}).limit(1000).then(function(r){
+      if (r.error) return; wishes = r.data || []; renderWishes();
+    });
+  }
+  function renderWishes(){
+    var vis = wishes.filter(function(w){ return !w.hidden; });
+    $("sTotal").textContent = vis.length;
+    $("sYes").textContent = vis.filter(function(w){ return w.attending === "yes"; }).length;
+    $("sNo").textContent = vis.filter(function(w){ return w.attending === "no"; }).length;
+    $("bWishes").textContent = vis.length;
+    var q = $("q").value.trim().toLowerCase();
+    var rows = wishes.filter(function(w){
+      if (filter === "hidden" ? !w.hidden : w.hidden) return false;
+      if (filter === "yes" && w.attending !== "yes") return false;
+      if (filter === "no" && w.attending !== "no") return false;
+      return !q || (w.name + " " + w.message).toLowerCase().indexOf(q) >= 0;
+    });
+    var body = $("wBody"); body.innerHTML = "";
+    rows.forEach(function(w){
+      var tr = document.createElement("tr"); if (w.hidden) tr.className = "hid";
+      var pill = w.attending === "yes" ? '<span class="pill yes">هيحضر</span>' : w.attending === "no" ? '<span class="pill no">مش هيقدر</span>' : '<span class="pill na">ماحددش</span>';
+      tr.innerHTML = "<td><b>"+U.esc(w.name)+"</b></td><td>"+pill+"</td><td class=\"msg\">"+(U.esc(w.message)||'<span style="color:var(--soft)">—</span>')+"</td><td class=\"when\">"+U.esc(U.stamp(new Date(w.created_at)))+"</td>"
+        + '<td><div class="acts"><button class="btn ghost sm" data-a="hide">'+(w.hidden?"إظهار":"إخفاء")+'</button><button class="btn danger sm" data-a="del">مسح</button></div></td>';
+      tr.querySelector('[data-a="hide"]').addEventListener("click", function(){
+        sb.from("wishes").update({hidden: !w.hidden}).eq("id", w.id).then(function(r){ if (!r.error){ w.hidden = !w.hidden; renderWishes(); } });
+      });
+      var del = tr.querySelector('[data-a="del"]');
+      del.addEventListener("click", function(){
+        if (del.dataset.sure !== "1"){ del.dataset.sure="1"; del.textContent="متأكد؟"; setTimeout(function(){ del.dataset.sure=""; del.textContent="مسح"; }, 3000); return; }
+        sb.from("wishes").delete().eq("id", w.id).then(function(r){ if (!r.error){ wishes = wishes.filter(function(x){ return x.id !== w.id; }); renderWishes(); } });
+      });
+      body.appendChild(tr);
+    });
+    $("wNone").hidden = rows.length > 0;
+    $("wNone").textContent = wishes.length ? "مافيش ردود بالفلتر ده." : "لسه مافيش ردود. أول ما حد يبعت تهنئة هتظهر هنا.";
+  }
+  document.querySelectorAll(".chipf").forEach(function(c){
+    c.addEventListener("click", function(){ filter = c.dataset.f; document.querySelectorAll(".chipf").forEach(function(x){ x.setAttribute("aria-pressed", x===c?"true":"false"); }); renderWishes(); });
+  });
+  $("q").addEventListener("input", renderWishes);
+  $("refresh").addEventListener("click", loadWishes);
+  setInterval(function(){ if (!$("appView").hidden && !document.hidden) loadWishes(); }, 60000);
+
+  // ---------- account ----------
+  $("passForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    if ($("np1").value !== $("np2").value){ say($("aMsg"), "الباسوردين مش زي بعض.", "err"); return; }
+    sb.auth.updateUser({password: $("np1").value}).then(function(r){
+      if (r.error) say($("aMsg"), "ماتغيرش: " + r.error.message, "err");
+      else { say($("aMsg"), "الباسورد اتغير.", "ok"); $("passForm").reset(); }
+    });
+  });
+  $("copyLink").addEventListener("click", function(){
+    var link = location.href.replace(/admin\.html.*$/, "");
+    var b = this;
+    (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject()).then(function(){ b.textContent = "اتنسخ"; }, function(){ b.textContent = link; })
+      .then(function(){ setTimeout(function(){ b.textContent = "انسخ لينك الدعوة"; }, 2500); });
+  });
+})();
+</script>
+</body>
+</html>
