@@ -479,7 +479,7 @@ td .acts{display:flex;gap:6px}
     });
   });
   $("copyLink").addEventListener("click", function(){
-    var link = location.href.replace(/admin\.html.*$/, "");
+    var link = location.href.replace(/admin(\.html)?([?#].*)?$/, "");
     var b = this;
     (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject()).then(function(){ b.textContent = "اتنسخ"; }, function(){ b.textContent = link; })
       .then(function(){ setTimeout(function(){ b.textContent = "انسخ لينك الدعوة"; }, 2500); });

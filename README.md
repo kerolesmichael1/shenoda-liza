@@ -6,10 +6,10 @@
 - `config.js` و `common.js` — إعدادات واتصال بقاعدة البيانات، ماتعدلش فيهم
 
 ## اللينكات
-- الدعوة: https://shenoda-liza.pages.dev
-- لوحة التحكم: https://shenoda-liza.pages.dev/admin.html
+- الدعوة: https://shenoda-liza.kerolesmichael1.workers.dev
+- لوحة التحكم: https://shenoda-liza.kerolesmichael1.workers.dev/admin
 
-أي تعديل يترفع على فرع main بيظهر على اللينك لوحده خلال دقيقة (Cloudflare Pages).
+أي تعديل يترفع على فرع main بيظهر على اللينك لوحده خلال دقيقة (Cloudflare).
 
 ## الدخول على لوحة التحكم
 - الإيميل والباسورد اتبعتولك في الشات. غيّر الباسورد من تبويب "الحساب" أول مرة تدخل.
