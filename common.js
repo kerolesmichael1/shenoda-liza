@@ -30,7 +30,31 @@
   }
   function fmt(date, opts){ return new Intl.DateTimeFormat(LOC, Object.assign({timeZone: TZ}, opts)).format(date); }
 
+  // Fonts the couple can pick for their names (Google Fonts family, CSS stack, weight, letter-spacing, uppercase)
+  var FONTS = [
+    {id:"cormorant", label:"Cormorant", family:"Cormorant Garamond", q:"Cormorant+Garamond:wght@500", stack:"'Cormorant Garamond',serif", w:500, ls:".04em", up:false},
+    {id:"playfair",  label:"Playfair",  family:"Playfair Display",   q:"Playfair+Display:wght@500",   stack:"'Playfair Display',serif",   w:500, ls:".01em", up:false},
+    {id:"cinzel",    label:"Cinzel",    family:"Cinzel",             q:"Cinzel:wght@500",             stack:"'Cinzel',serif",             w:500, ls:".08em", up:true},
+    {id:"marcellus", label:"Marcellus", family:"Marcellus",          q:"Marcellus",                   stack:"'Marcellus',serif",          w:400, ls:".06em", up:false},
+    {id:"bodoni",    label:"Bodoni",    family:"Bodoni Moda",        q:"Bodoni+Moda:wght@500",        stack:"'Bodoni Moda',serif",        w:500, ls:".02em", up:false},
+    {id:"italiana",  label:"Italiana",  family:"Italiana",           q:"Italiana",                    stack:"'Italiana',serif",           w:400, ls:".06em", up:false},
+    {id:"josefin",   label:"Josefin",   family:"Josefin Sans",       q:"Josefin+Sans:wght@300",       stack:"'Josefin Sans',sans-serif",  w:300, ls:".14em", up:true},
+    {id:"montserrat",label:"Montserrat",family:"Montserrat",         q:"Montserrat:wght@300",         stack:"'Montserrat',sans-serif",    w:300, ls:".16em", up:true},
+    {id:"greatvibes",label:"Great Vibes (مزخرف)", family:"Great Vibes", q:"Great+Vibes",              stack:"'Great Vibes',cursive",      w:400, ls:"0",     up:false},
+    {id:"pinyon",    label:"Pinyon (مزخرف)",      family:"Pinyon Script", q:"Pinyon+Script",          stack:"'Pinyon Script',cursive",    w:400, ls:"0",     up:false}
+  ];
+  function font(id){ for (var i=0;i<FONTS.length;i++) if (FONTS[i].id===id) return FONTS[i]; return FONTS[0]; }
+  function loadFont(f){
+    var idn = "font-" + f.id; if (document.getElementById(idn)) return;
+    var l = document.createElement("link"); l.id = idn; l.rel = "stylesheet";
+    l.href = "https://fonts.googleapis.com/css2?family=" + f.q + "&display=swap"; document.head.appendChild(l);
+  }
+  // Extra settings live as one {type:"settings"} item inside the photos list
+  function settings(inv){ var a = Array.isArray(inv && inv.photos) ? inv.photos : []; for (var i=0;i<a.length;i++) if (a[i] && a[i].type==="settings") return a[i]; return {type:"settings"}; }
+  function photoList(inv){ return (Array.isArray(inv && inv.photos) ? inv.photos : []).filter(function(p){ return typeof p === "string" || (p && p.url); }).map(function(p){ return typeof p === "string" ? {url:p} : p; }); }
+
   window.WeddingUtil = {
+    FONTS: FONTS, font: font, loadFont: loadFont, settings: settings, photoList: photoList,
     TZ: TZ, parts: parts, fromLocalInput: fromLocalInput, toLocalInput: toLocalInput,
     weekday: function(d){ return fmt(d, {weekday:"long"}); },
     monthName: function(d){ return fmt(d, {month:"long"}); },
