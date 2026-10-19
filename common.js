@@ -1,4 +1,4 @@
-// v2026-10-18
+// v2026-10-19
 // Shared helpers for the invitation and the dashboard
 (function(){
   var TZ = (window.WEDDING_CONFIG && window.WEDDING_CONFIG.TIMEZONE) || "Africa/Cairo";
