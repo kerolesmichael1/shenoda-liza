@@ -138,7 +138,7 @@ td .acts{display:flex;gap:6px}
   <header class="top">
     <div class="who"><span class="mark" id="topMark">S &amp; L</span><div><h1>لوحة تحكم الدعوة</h1><p class="sub" id="topSub"></p></div></div>
     <div class="acts">
-      <a class="btn ghost" href="./" target="_blank" rel="noopener">افتح الدعوة</a>
+      <a class="btn ghost" id="openInvite" href="./" target="_blank" rel="noopener">افتح الدعوة</a>
       <button class="btn ghost" id="copyLink" type="button">انسخ لينك الدعوة</button>
       <button class="btn ghost" id="logout" type="button">خروج</button>
     </div>
@@ -523,6 +523,8 @@ td .acts{display:flex;gap:6px}
   $("refresh").addEventListener("click", loadWishes);
   setInterval(function(){ if (!$("appView").hidden && !document.hidden) loadWishes(); }, 60000);
 
+  if (window.WEDDING_CONFIG && window.WEDDING_CONFIG.INVITE_URL) $("openInvite").href = window.WEDDING_CONFIG.INVITE_URL;
+
   // ---------- account ----------
   $("passForm").addEventListener("submit", function(e){
     e.preventDefault();
@@ -533,7 +535,7 @@ td .acts{display:flex;gap:6px}
     });
   });
   $("copyLink").addEventListener("click", function(){
-    var link = location.href.replace(/admin(\.html)?([?#].*)?$/, "");
+    var link = (window.WEDDING_CONFIG && window.WEDDING_CONFIG.INVITE_URL) || location.href.replace(/admin(\.html)?([?#].*)?$/, "");
     var b = this;
     (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject()).then(function(){ b.textContent = "اتنسخ"; }, function(){ b.textContent = link; })
       .then(function(){ setTimeout(function(){ b.textContent = "انسخ لينك الدعوة"; }, 2500); });
